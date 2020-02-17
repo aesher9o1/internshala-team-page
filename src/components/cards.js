@@ -3,9 +3,7 @@ import styled, { withTheme } from 'styled-components'
 import PropTypes from 'prop-types'
 import {
   SHUFFLE_ARRAY,
-  MESSAGE_SAME_CARD,
-  POSITIVE_REINFORCEMENTS,
-  NEGATIVE_REINFORCEMENTS
+  MESSAGE_SAME_CARD
 } from '../utils/repository'
 
 const Card = styled.div`
@@ -53,12 +51,16 @@ function Cards(props) {
       temp.push({
         emoji: team[i].img,
         isActive: false,
-        canBeClicked: true
+        canBeClicked: true,
+        desc: team[i].desc,
+        name: team[i].name
       })
       temp.push({
         emoji: team[i].img,
         isActive: false,
-        canBeClicked: true
+        canBeClicked: true,
+        desc: team[i].desc,
+        name: team[i].name
       })
     }
     setCards(SHUFFLE_ARRAY(temp))
@@ -94,9 +96,7 @@ function Cards(props) {
         setScore(score + 1)
 
         props.showSnackbar(
-          POSITIVE_REINFORCEMENTS[
-          Math.floor(Math.random() * POSITIVE_REINFORCEMENTS.length)
-          ]
+          cards[index].desc, 4000
         )
         setFirstSelectedItem(null)
 
@@ -116,11 +116,11 @@ function Cards(props) {
 
         setCards(cardsCopy)
 
-        props.showSnackbar(
-          NEGATIVE_REINFORCEMENTS[
-          Math.floor(Math.random() * NEGATIVE_REINFORCEMENTS.length)
-          ]
-        )
+        // props.showSnackbar(
+        //   NEGATIVE_REINFORCEMENTS[
+        //   Math.floor(Math.random() * NEGATIVE_REINFORCEMENTS.length)
+        //   ]
+        // )
       }
       setFirstSelectedItem(index)
     } else {

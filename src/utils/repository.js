@@ -1,4 +1,4 @@
-const CARD_UPPER_LIMIT = 16
+const CARD_UPPER_LIMIT = 81
 const CARD_LOWER_LIMIT = 3
 
 
