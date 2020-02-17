@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react'
 import styled, { withTheme } from 'styled-components'
 import PropTypes from 'prop-types'
 import {
-  EmojiRepository,
   SHUFFLE_ARRAY,
   MESSAGE_SAME_CARD,
   POSITIVE_REINFORCEMENTS,
@@ -16,7 +15,7 @@ const Card = styled.div`
   padding: ${(props) => props.theme.padding};
   color: white;
   padding: 1rem;
-  height: 4rem;
+  height: 5rem;
   text-align: center;
   cursor: pointer;
   transform: scale(1);
@@ -34,8 +33,11 @@ const Card = styled.div`
     transform: scale(0.95);
   }
 `
-const Emoji = styled.span`
+const Emoji = styled.img`
   font-size: 2rem;
+  width: 100px;
+  margin-top:-0.2em;
+  border-radius: 50%;
 `
 
 function Cards(props) {
@@ -43,24 +45,24 @@ function Cards(props) {
   // eslint-disable-next-line no-unused-vars
   const [firstSelectedItem, setFirstSelectedItem] = useState(null)
   const [score, setScore] = useState(0)
-  const { emojiCount } = props
+  const { emojiCount, team } = props
 
   useEffect(() => {
     const temp = []
     for (let i = 0; i < emojiCount; i++) {
       temp.push({
-        emoji: EmojiRepository[i],
+        emoji: team[i].img,
         isActive: false,
         canBeClicked: true
       })
       temp.push({
-        emoji: EmojiRepository[i],
+        emoji: team[i].img,
         isActive: false,
         canBeClicked: true
       })
     }
     setCards(SHUFFLE_ARRAY(temp))
-  }, [emojiCount])
+  }, [emojiCount, team])
 
   const handleCardClick = (index) => {
     const cardsCopy = [...cards]
@@ -93,7 +95,7 @@ function Cards(props) {
 
         props.showSnackbar(
           POSITIVE_REINFORCEMENTS[
-            Math.floor(Math.random() * POSITIVE_REINFORCEMENTS.length)
+          Math.floor(Math.random() * POSITIVE_REINFORCEMENTS.length)
           ]
         )
         setFirstSelectedItem(null)
@@ -116,7 +118,7 @@ function Cards(props) {
 
         props.showSnackbar(
           NEGATIVE_REINFORCEMENTS[
-            Math.floor(Math.random() * NEGATIVE_REINFORCEMENTS.length)
+          Math.floor(Math.random() * NEGATIVE_REINFORCEMENTS.length)
           ]
         )
       }
@@ -142,10 +144,10 @@ function Cards(props) {
           }}
         >
           {cards[i].isActive || !cards[i].canBeClicked ? (
-            <Emoji role="img">{cards[i].emoji}</Emoji>
+            <Emoji src={cards[i].emoji} />
           ) : (
-            <div />
-          )}
+              <div />
+            )}
         </Card>
       )
     }
@@ -158,13 +160,16 @@ function Cards(props) {
 Cards.propTypes = {
   emojiCount: PropTypes.number,
   showSnackbar: PropTypes.func,
-  setShouldTimerRun: PropTypes.func
+  setShouldTimerRun: PropTypes.func,
+  // eslint-disable-next-line react/forbid-prop-types
+  team: PropTypes.array
 }
 
 Cards.defaultProps = {
   emojiCount: 4,
   showSnackbar: null,
-  setShouldTimerRun: null
+  setShouldTimerRun: null,
+  team: null
 }
 
 export default withTheme(Cards)
